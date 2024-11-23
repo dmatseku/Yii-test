@@ -63,7 +63,7 @@ class CreateLoanForm extends Model
     public function createLoan(): Loan|false
     {
         if ($this->validate() && !Yii::$app->user->isGuest) {
-            $loan = $this->loanRepository->create($this->amount, $this->purpose, $this->term, $this->income, Yii::$app->user->id);
+            $loan = $this->loanRepository->create($this->amount, $this->term, $this->purpose, $this->income, Yii::$app->user->id);
 
             $this->loanRepository->save($loan);
             return $loan;
