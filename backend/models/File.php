@@ -32,4 +32,14 @@ class File extends ActiveRecord
 
         return $fields;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function rules(): array
+    {
+        return [
+            ['filepath', 'string', 'max' => 255, 'min' => 3],
+        ];
+    }
 }

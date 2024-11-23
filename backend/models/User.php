@@ -64,6 +64,16 @@ class User extends ActiveRecord implements IdentityInterface
     public function rules(): array
     {
         return [
+            ['firstname', 'trim'],
+            ['firstname', 'string', 'min' => 3, 'max' => 60],
+
+            ['lastname', 'trim'],
+            ['lastname', 'string', 'min' => 3, 'max' => 60],
+
+            ['date_of_birth', 'date', 'format' => 'YYYY-MM-DD', 'message' => 'invalid date of birth'],
+
+            ['passport_expiry_date', 'date', 'format' => 'YYYY-MM-DD', 'message' => 'invalid expiry date'],
+
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE, self::STATUS_DELETED]],
         ];

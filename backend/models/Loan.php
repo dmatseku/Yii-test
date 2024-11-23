@@ -37,8 +37,18 @@ class Loan extends ActiveRecord
     public function rules(): array
     {
         return [
+            ['amount', 'integer', 'min' => 1],
+
+            ['term', 'integer', 'min' => 1],
+
+            ['purpose', 'string', 'min' => 3],
+            ['purpose', 'trim'],
+
+            ['income', 'integer', 'min' => 1],
+
+            ['status', 'integer'],
             ['status', 'default', 'value' => static::STATUSES['pending']],
-            ['status', 'compare', 'compareValue' => static::STATUSES['pending'], 'operator' => '==', 'type' => 'integer'],
+            ['status', 'in', 'range' => static::STATUSES],
         ];
     }
 }
