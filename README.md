@@ -3,7 +3,8 @@
 ## Setup
 
 1. Clone project and create database. Link apache/nginx to `backend/web` folder.
-2. Setup file `common/config/main-local.php` with the following code:
+2. Run `php init`.
+3. Setup db connection in the file `common/config/main-local.php` with the following code:
     ```
     <?php
     
@@ -19,8 +20,8 @@
         ],
     ];
     ```
-3. Run the setup script: `sh local_init.sh` and agree with everything.
-4. Register cron task like the following `@yearly <path_to_project>/php yii annual/lucky`
+4. Run the setup script: `sh local_init.sh` and agree with everything.
+5. Register cron task like the following `@yearly <path_to_project>/php yii annual/lucky`
 
 ## API and roles
 
