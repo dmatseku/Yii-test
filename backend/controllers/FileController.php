@@ -2,11 +2,10 @@
 
 namespace backend\controllers;
 
-use common\models\Forms\FileUploadForm;
+use backend\models\Forms\FileUploadForm;
 use Yii;
 use yii\filters\AccessControl;
 use yii\filters\auth\HttpBearerAuth;
-use yii\filters\VerbFilter;
 use yii\rest\ActiveController;
 use yii\web\UploadedFile;
 
@@ -17,12 +16,15 @@ class FileController extends ActiveController
         'upload'
     ];
 
-    public $modelClass = 'common\models\File';
+    /**
+     * {@inheritdoc}
+     */
+    public $modelClass = 'backend\models\File';
 
     /**
      * {@inheritdoc}
      */
-    public function behaviors()
+    public function behaviors(): array
     {
         $behaviors = parent::behaviors();
         $behaviors['access'] = [
@@ -48,7 +50,10 @@ class FileController extends ActiveController
         return $behaviors;
     }
 
-    public function checkAccess($action, $model = null, $params = [])
+    /**
+     * {@inheritdoc}
+     */
+    public function checkAccess($action, $model = null, $params = []): void
     {
         if ($model !== null && in_array($action, static::CLIENT_ACTIONS)) {
             if (!Yii::$app->user->can("hasFullPower") &&
@@ -60,7 +65,12 @@ class FileController extends ActiveController
         }
     }
 
-    public function actionUpload()
+    /**
+     * @return array
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\di\NotInstantiableException
+     */
+    public function actionUpload(): array
     {
         $model = Yii::$container->get(FileUploadForm::class);
 
@@ -73,6 +83,7 @@ class FileController extends ActiveController
             ];
         }
 
+        Yii::$app->response->statusCode = 401;
         return [
             'success' => false,
             'errors' => $model->errors,

@@ -2,25 +2,28 @@
 
 namespace backend\controllers;
 
-use common\models\Forms\CreateLoanForm;
+use backend\models\Forms\CreateLoanForm;
 use Yii;
 use yii\filters\AccessControl;
 use yii\filters\auth\HttpBearerAuth;
-use yii\filters\VerbFilter;
 use yii\rest\ActiveController;
 
 class LoanController extends ActiveController
 {
     protected const array CLIENT_ACTIONS = [
-        'view'
+        'view',
+        'new',
     ];
-
-    public $modelClass = 'common\models\Loan';
 
     /**
      * {@inheritdoc}
      */
-    public function behaviors()
+    public $modelClass = 'backend\models\Loan';
+
+    /**
+     * {@inheritdoc}
+     */
+    public function behaviors(): array
     {
         $behaviors = parent::behaviors();
         $behaviors['access'] = [
@@ -46,7 +49,10 @@ class LoanController extends ActiveController
         return $behaviors;
     }
 
-    public function checkAccess($action, $model = null, $params = [])
+    /**
+     * {@inheritdoc}
+     */
+    public function checkAccess($action, $model = null, $params = []): void
     {
         if (in_array($action, static::CLIENT_ACTIONS)) {
             if (!Yii::$app->user->can("hasFullPower") &&
@@ -58,7 +64,12 @@ class LoanController extends ActiveController
         }
     }
 
-    public function actionNew()
+    /**
+     * @return array
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\di\NotInstantiableException
+     */
+    public function actionNew(): array
     {
         $model = Yii::$container->get(CreateLoanForm::class);
 
@@ -72,6 +83,7 @@ class LoanController extends ActiveController
             ];
         }
 
+        Yii::$app->response->statusCode = 401;
         return [
             'success' => false,
             'errors' => $model->errors,

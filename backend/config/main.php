@@ -13,8 +13,9 @@ return [
     'bootstrap' => ['log'],
     'modules' => [],
     'components' => [
+        'loan' => \backend\services\LoanService::class,
         'user' => [
-            'identityClass' => 'common\models\User',
+            'identityClass' => \backend\models\User::class,
             'identityCookie' => ['name' => '_identity-backend', 'httpOnly' => true],
             'loginUrl' => null,
             'enableSession' => false,
@@ -33,7 +34,7 @@ return [
         ],
         'request' => [
             'parsers' => [
-                'application/json' => 'yii\web\JsonParser',
+                'application/json' => \yii\web\JsonParser::class,
             ]
         ],
         'urlManager' => [
@@ -42,7 +43,7 @@ return [
             'enableStrictParsing' => true,
             'rules' => [
                 [
-                    'class' => 'yii\rest\UrlRule',
+                    'class' => \yii\rest\UrlRule::class,
                     'controller' => ['account'],
                     'extraPatterns' => [
                         'POST signup' => 'signup',
@@ -51,14 +52,14 @@ return [
                     ],
                 ],
                 [
-                    'class' => 'yii\rest\UrlRule',
+                    'class' => \yii\rest\UrlRule::class,
                     'controller' => ['file'],
                     'extraPatterns' => [
                         'POST upload' => 'upload',
                     ],
                 ],
                 [
-                    'class' => 'yii\rest\UrlRule',
+                    'class' => \yii\rest\UrlRule::class,
                     'controller' => ['loan'],
                     'except' => ['create'],
                     'extraPatterns' => [

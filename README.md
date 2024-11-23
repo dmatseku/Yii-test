@@ -1,60 +1,33 @@
-<p align="center">
-    <a href="https://github.com/yiisoft" target="_blank">
-        <img src="https://avatars0.githubusercontent.com/u/993323" height="100px">
-    </a>
-    <h1 align="center">Yii 2 Advanced Project Template</h1>
-    <br>
-</p>
+# Yii Test Task
 
-Yii 2 Advanced Project Template is a skeleton [Yii 2](https://www.yiiframework.com/) application best for
-developing complex Web applications with multiple tiers.
+## Setup
 
-The template includes three tiers: front end, back end, and console, each of which
-is a separate Yii application.
+1. Clone project and create database. Link apache/nginx to `backend/web` folder.
+2. Setup file `common/config/main-local.php` with the following code:
+    ```
+    <?php
+    
+    return [
+        'components' => [
+            'db' => [
+                'class' => \yii\db\Connection::class,
+                'dsn' => 'mysql:host=<host>;dbname=<database name>',
+                'username' => '<username>',
+                'password' => '<password>',
+                'charset' => 'utf8',
+            ],
+        ],
+    ];
+    ```
+3. Run the setup script: `sh local_init.sh` and agree with everything.
+4. Register cron task like the following `@yearly <path_to_project>/php yii annual/lucky`
 
-The template is designed to work in a team development environment. It supports
-deploying the application in different environments.
+## API and roles
 
-Documentation is at [docs/guide/README.md](docs/guide/README.md).
+All api requests are covered by roles. There are two roles by default: client and admin. Client can only create own profile or loan and view only own data. To assign user to admin role, use the next command: `php yii rbac/admin <user_id>`.
+All three entities (User, File and Loan) have the default crud implemented. Also, they have special actions described here: <p href="https://app.swaggerhub.com/apis/DMATSEKU/your-api/1.0.0-oas3">https://app.swaggerhub.com/apis/DMATSEKU/your-api/1.0.0-oas3</p>
 
-[![Latest Stable Version](https://img.shields.io/packagist/v/yiisoft/yii2-app-advanced.svg)](https://packagist.org/packages/yiisoft/yii2-app-advanced)
-[![Total Downloads](https://img.shields.io/packagist/dt/yiisoft/yii2-app-advanced.svg)](https://packagist.org/packages/yiisoft/yii2-app-advanced)
-[![build](https://github.com/yiisoft/yii2-app-advanced/workflows/build/badge.svg)](https://github.com/yiisoft/yii2-app-advanced/actions?query=workflow%3Abuild)
+## Structure
 
-DIRECTORY STRUCTURE
--------------------
-
-```
-common
-    config/              contains shared configurations
-    mail/                contains view files for e-mails
-    models/              contains model classes used in both backend and frontend
-    tests/               contains tests for common classes    
-console
-    config/              contains console configurations
-    controllers/         contains console controllers (commands)
-    migrations/          contains database migrations
-    models/              contains console-specific model classes
-    runtime/             contains files generated during runtime
-backend
-    assets/              contains application assets such as JavaScript and CSS
-    config/              contains backend configurations
-    controllers/         contains Web controller classes
-    models/              contains backend-specific model classes
-    runtime/             contains files generated during runtime
-    tests/               contains tests for backend application    
-    views/               contains view files for the Web application
-    web/                 contains the entry script and Web resources
-frontend
-    assets/              contains application assets such as JavaScript and CSS
-    config/              contains frontend configurations
-    controllers/         contains Web controller classes
-    models/              contains frontend-specific model classes
-    runtime/             contains files generated during runtime
-    tests/               contains tests for frontend application
-    views/               contains view files for the Web application
-    web/                 contains the entry script and Web resources
-    widgets/             contains frontend widgets
-vendor/                  contains dependent 3rd-party packages
-environments/            contains environment-based overrides
-```
+The most of the implementation is located in `backend` module; DB configuration is located in `common` module; migrations and commands are located in `console` module.
+Mostly it's a controller-form-model or controller-crud implementation with `backend\Loan\LoanService` as an example. to work with entities in my own code the Repositories were used anywhere. They are located in the `model` folder and implement the interfaces in `contracts` folder.

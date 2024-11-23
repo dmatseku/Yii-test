@@ -7,7 +7,10 @@ use yii\db\Migration;
  */
 class m241122_094447_files_table extends Migration
 {
-    public function up()
+    /**
+     * @return void
+     */
+    public function up(): void
     {
         $tableOptions = null;
         if ($this->db->driverName === 'mysql') {
@@ -37,7 +40,10 @@ class m241122_094447_files_table extends Migration
         );
     }
 
-    public function down()
+    /**
+     * @return void
+     */
+    public function down(): void
     {
         $this->dropTable('{{%files}}');
     }

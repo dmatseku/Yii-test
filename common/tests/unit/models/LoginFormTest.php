@@ -2,8 +2,8 @@
 
 namespace common\tests\unit\models;
 
+use backend\models\Forms\LoginForm;
 use common\fixtures\UserFixture;
-use common\models\Forms\LoginForm;
 use Yii;
 
 /**

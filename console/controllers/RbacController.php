@@ -2,24 +2,35 @@
 
 namespace console\controllers;
 
-use yii\console\Controller;
 use Yii;
+use yii\console\Controller;
 
 class RbacController extends Controller
 {
+    /**
+     * @param $id
+     * @param $module
+     * @param \backend\contracts\UserRepositoryInterface $userRepository
+     */
     public function __construct(
         $id,
         $module,
-        protected \common\contracts\UserRepositoryInterface $userRepository
+        protected \backend\contracts\UserRepositoryInterface $userRepository
     ) {
         parent::__construct($id, $module);
     }
 
-    public function actionInit()
+    /**
+     * @return void
+     * @throws \yii\base\Exception
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\di\NotInstantiableException
+     */
+    public function actionInit(): void
     {
         $auth = Yii::$app->authManager;
 
-        $clientRule = Yii::$container->get(\common\rbac\DataBelongsToClient::class);
+        $clientRule = Yii::$container->get(\backend\rbac\DataBelongsToClient::class);
         $auth->add($clientRule);
         echo "added client own data rule" . PHP_EOL;
 
@@ -52,15 +63,16 @@ class RbacController extends Controller
         echo "assigned everything to admin role" . PHP_EOL;
     }
 
-    public function actionAdmin($userId)
+    /**
+     * @param $userId
+     * @return void
+     * @throws \Exception
+     */
+    public function actionAdmin($userId): void
     {
         $user = $this->userRepository->get($userId);
 
-        if ($user) {
-            Yii::$app->authManager->assign(Yii::$app->authManager->getRole('admin'), $user->id);
-            echo "assigned " . $user->firstname . " " . $user->lastname . " to admin role" . PHP_EOL;
-        } else {
-            echo "user not found" . PHP_EOL;
-        }
+        Yii::$app->authManager->assign(Yii::$app->authManager->getRole('admin'), $user->id);
+        echo "assigned " . $user->firstname . " " . $user->lastname . " to admin role" . PHP_EOL;
     }
 }

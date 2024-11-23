@@ -2,13 +2,11 @@
 
 namespace backend\controllers;
 
-use common\models\Forms\ClientInfoForm;
-use common\models\Forms\LoginForm;
-use common\models\Forms\SignupForm;
+use backend\models\Forms\LoginForm;
+use backend\models\Forms\SignupForm;
 use Yii;
 use yii\filters\AccessControl;
 use yii\filters\auth\HttpBearerAuth;
-use yii\filters\VerbFilter;
 use yii\rest\ActiveController;
 
 class AccountController extends ActiveController
@@ -23,12 +21,15 @@ class AccountController extends ActiveController
         'signup',
     ];
 
-    public $modelClass = 'common\models\User';
+    /**
+     * {@inheritdoc}
+     */
+    public $modelClass = 'backend\models\User';
 
     /**
      * {@inheritdoc}
      */
-    public function behaviors()
+    public function behaviors(): array
     {
         $behaviors = parent::behaviors();
         $behaviors['access'] = [
@@ -60,7 +61,11 @@ class AccountController extends ActiveController
         return $behaviors;
     }
 
-    public function checkAccess($action, $model = null, $params = [])
+
+    /**
+     * {@inheritdoc}
+     */
+    public function checkAccess($action, $model = null, $params = []): void
     {
         if ($model !== null && in_array($action, static::CLIENT_ACTIONS)) {
             if (!Yii::$app->user->can("hasFullPower") &&
@@ -74,14 +79,22 @@ class AccountController extends ActiveController
         }
     }
 
-    public function actionLogout()
+    /**
+     * @return array
+     */
+    public function actionLogout(): array
     {
         Yii::$app->user->identity->clear_access_token();
 
         return ['success' => true];
     }
 
-    public function actionLogin()
+    /**
+     * @return array
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\di\NotInstantiableException
+     */
+    public function actionLogin(): array
     {
         $model = Yii::$container->get(LoginForm::class);
 
@@ -96,13 +109,19 @@ class AccountController extends ActiveController
             ];
         }
 
+        Yii::$app->response->statusCode = 401;
         return [
             'success' => false,
             'errors' => $model->errors,
         ];
     }
 
-    public function actionSignup()
+    /**
+     * @return array
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\di\NotInstantiableException
+     */
+    public function actionSignup(): array
     {
         $model = Yii::$container->get(SignupForm::class);
 
@@ -117,6 +136,7 @@ class AccountController extends ActiveController
             ];
         }
 
+        Yii::$app->response->statusCode = 401;
         return [
             'success' => false,
             'errors' => $model->errors,

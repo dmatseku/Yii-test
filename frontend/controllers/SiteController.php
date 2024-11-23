@@ -2,8 +2,8 @@
 
 namespace frontend\controllers;
 
-use common\models\Forms\LoginForm;
-use common\models\Forms\SignupForm;
+use backend\models\Forms\LoginForm;
+use backend\models\Forms\SignupForm;
 use frontend\models\ContactForm;
 use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResendVerificationEmailForm;

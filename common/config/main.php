@@ -15,9 +15,9 @@ return [
     ],
     'container' => [
         'definitions' => [
-            \common\contracts\UserRepositoryInterface::class => \common\models\Repositories\UserRepository::class,
-            \common\contracts\FileRepositoryInterface::class => \common\models\Repositories\FileRepository::class,
-            \common\contracts\LoanRepositoryInterface::class => \common\models\Repositories\LoanRepository::class,
+            \backend\contracts\UserRepositoryInterface::class => \backend\models\Repositories\UserRepository::class,
+            \backend\contracts\FileRepositoryInterface::class => \backend\models\Repositories\FileRepository::class,
+            \backend\contracts\LoanRepositoryInterface::class => \backend\models\Repositories\LoanRepository::class,
         ]
     ]
 ];
