@@ -30,5 +30,7 @@ All three entities (User, File and Loan) have the default crud implemented. Also
 
 ## Structure
 
+The project is based on yii-advanced.
+
 The most of the implementation is located in `backend` module; DB configuration is located in `common` module; migrations and commands are located in `console` module.
 Mostly it's a controller-form-model or controller-crud implementation with `backend\Loan\LoanService` as an example. to work with entities in my own code the Repositories were used anywhere. They are located in the `model` folder and implement the interfaces in `contracts` folder.
