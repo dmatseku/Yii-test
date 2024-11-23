@@ -14,7 +14,7 @@ class LoginForm extends Model
     public string $password;
     public bool $rememberMe = true;
 
-    private ?User $_user;
+    private ?User $_user = null;
 
     /**
      * @param UserRepositoryInterface $userRepository
